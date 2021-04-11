@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import { AppBar, Toolbar, Typography, Button, Paper } from "@material-ui/core";
 import MapContainer from "./Maps";
 import server from "../../ServerURL";
@@ -14,7 +13,11 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import SimpleMenu from "./SimpleMenu"
+import SimpleMenu from "./SimpleMenu";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import RestoreIcon from "@material-ui/icons/Restore";
+import FormDialog from "./FiltersWindow";
+import AddLocationDialog from "./AddLocationForm"
 const columns = [
   { id: "id", label: "Favourite", minWidth: 50 },
   { id: "name", label: "Name", minWidth: 170 },
@@ -52,10 +55,10 @@ const columns = [
 const styles = (theme) => ({
   paper: {
     padding: 20,
-    marginTop: "5rem",
+    marginTop: "0.5rem",
     textAlign: "center",
     color: "black",
-    width: "90vw",
+    width: "auto",
   },
   root: {
     width: "100%",
@@ -79,6 +82,24 @@ class DashBoard extends Component {
       favPlaces: [],
     };
 
+    this.filterByCountry = (country) => {
+      let fileteredByCountry = this.state.data.filter(
+        (element) => element.country === country
+      );
+      this.setState({
+        data: fileteredByCountry,
+      });
+    };
+
+    this.filterByWindProbablity = (minWindProb) => {
+      let filteredByWind = this.state.data.filter(
+        (element) => element.probability >= minWindProb
+      );
+
+      this.setState({
+        data: filteredByWind,
+      });
+    };
     this.containsFavPlace = (id, arr) => {
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].id === id) return true;
@@ -101,7 +122,6 @@ class DashBoard extends Component {
     this.handleLogout = () => {
       this.props.history.push("/LogIn");
     };
-
 
     this.loadData = async () => {
       try {
@@ -143,7 +163,7 @@ class DashBoard extends Component {
           style={{
             position: "relative",
             width: "100%",
-            backgroundColor:"#011627"
+            backgroundColor: "#011627",
           }}
         >
           <Toolbar>
@@ -153,7 +173,9 @@ class DashBoard extends Component {
 
             <div style={{ flex: 1 }}></div>
 
+            <AddLocationDialog/>
             <SimpleMenu></SimpleMenu>
+            
           </Toolbar>
         </AppBar>
 
@@ -164,10 +186,23 @@ class DashBoard extends Component {
             favPlaces={this.state.favPlaces}
             className="mapContainer"
           />
-          <Paper style= {{backgroundColor:"#C6CCD2"}}className={classes.paper}>Locations</Paper>
-          <Paper  style= {{backgroundColor:"#C6CCD2"}} className={classes.paper}>
+          <Paper
+            style={{ backgroundColor: "#C6CCD2" }}
+            className={classes.paper}
+          >
+            <FormDialog
+              loadData={this.loadData}
+              filterByCountry={this.filterByCountry}
+              filterByProb={this.filterByWindProbablity}
+              data={this.state.data}
+            ></FormDialog>
+          </Paper>
+          <Paper
+            style={{ backgroundColor: "#C6CCD2" }}
+            className={classes.paper}
+          >
             <Paper className={classes.root}>
-              <TableContainer  className={classes.container}>
+              <TableContainer className={classes.container}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
                     <TableRow>
@@ -207,7 +242,7 @@ class DashBoard extends Component {
                                     value,
                                     this.state.favPlaces
                                   ) ? (
-                                    <StarIcon  style={{color:"#FF9529"}}/>
+                                    <StarIcon style={{ color: "#FF9529" }} />
                                   ) : null}
 
                                   {column.id === "id" &&
@@ -215,7 +250,9 @@ class DashBoard extends Component {
                                     value,
                                     this.state.favPlaces
                                   ) ? (
-                                    <StarBorderIcon style={{color:"#FF9529"}} />
+                                    <StarBorderIcon
+                                      style={{ color: "#FF9529" }}
+                                    />
                                   ) : null}
 
                                   {column.format && typeof value === "number"

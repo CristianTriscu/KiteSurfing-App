@@ -92,7 +92,9 @@ class Login extends Component {
                 <Grid item>
                   <TextField 
                   onChange={this.handleChange}
-                  id="input-Email" label="E-mail" />
+                  id="input-Email" label="E-mail" 
+                  type="email"
+                  />
                 </Grid>
               </Grid>
             </FormControl>
@@ -109,6 +111,7 @@ class Login extends Component {
                     onChange={this.handleChange}
                     id="input-Password"
                     label="Password"
+                    type="password"
                   />
                 </Grid>
               </Grid>
