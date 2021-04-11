@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
+import Dashboard from "./Components/Dashboard/Dashboard";
 import LogIn from "./Components/LogIn/LogIn";
 
 class App extends Component {
@@ -23,7 +24,11 @@ class App extends Component {
             path="/Dashboard"
             exact={true}
             component={() => {
-              return <div className="App"> Dashboard here</div>;
+              return (
+                <div className="App">
+                  <Dashboard />
+                </div>
+              );
             }}
           />
         </Switch>
