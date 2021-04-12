@@ -17,15 +17,20 @@ export class MapContainer extends Component {
   };
 
   addLocationToFavourites = async (id) => {
+    const { loadFaves } = this.props;
     try {
       const requsetOptions = {
         method: "POST",
+        body: {
+          id: id,
+        },
       };
       const response = await fetch(server + "favourites", requsetOptions);
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       if (data.spot) {
         alert("Succes");
+        loadFaves();
       } else {
         alert("Failed");
       }
@@ -83,11 +88,11 @@ export class MapContainer extends Component {
   render() {
     const { markers } = this.props;
     const { favPlaces } = this.props;
-    //console.log("props din maps");
-    console.log("Locatii");
+
+    // console.log("Locatii");
     console.log(markers);
-    console.log("fav places");
-    console.log(favPlaces);
+    // console.log("fav places");
+    // console.log(favPlaces);
     return (
       <div id="mapBox">
         <Map
@@ -123,23 +128,35 @@ export class MapContainer extends Component {
             onClose={this.onClose}
           >
             <div>
-              <Typography variant="h5" component="h2" align="center">
-                DETAILS:
-              </Typography>
-              <Typography>
+              <Typography variant="h5" size="50" align="left">
                 {" "}
-                {"test " + this.state.selectedPlace.id}
-                {this.state.selectedPlace.name}, wind probability:{" "}
-                {this.state.selectedPlace.probability}
+                {this.state.selectedPlace.name}
               </Typography>
-              <Typography>
-                {" "}
-                Country: {this.state.selectedPlace.country}
+
+              <Typography align="left">
+                Wind probability:
+                <Typography variant="subtitle2" align="left">
+                  {this.state.selectedPlace.probability + " %"}
+                </Typography>
+              </Typography>
+              <Typography align="left">
+                Country:
+                <Typography variant="subtitle2" align="left">
+                  {this.state.selectedPlace.country}
+                </Typography>
+              </Typography>
+              <Typography align="left">
+                When to go:
+                <Typography variant="subtitle2" align="left">
+                  {" "}
+                  {this.state.selectedPlace.month}
+                </Typography>
               </Typography>
 
               {this.state.selectedPlace.icon ===
               "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" ? (
                 <input
+                  className="buttonRomove"
                   type="button"
                   value="Remove from faves"
                   onClick={() =>
@@ -150,11 +167,12 @@ export class MapContainer extends Component {
                 ></input>
               ) : (
                 <input
+                  className="buttonAdd"
                   type="button"
                   value="add to faves"
-                  onClick={() => {
-                    alert("test");
-                  }}
+                  onClick={() =>
+                    this.addLocationToFavourites(this.state.selectedPlace.id)
+                  }
                 ></input>
               )}
             </div>

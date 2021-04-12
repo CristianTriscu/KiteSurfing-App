@@ -1,5 +1,5 @@
 #mapBox div:first-child {
-  position: relative !important;  
+  position: relative !important;
   width: auto !important;
 }
 
@@ -7,9 +7,35 @@
   text-align: center;
 }
 
-.customDiv{
+.customDiv {
   padding: 2rem;
 }
-.customDiv2{
+.customDiv2 {
   padding: 1rem;
+}
+
+.buttonRomove {
+  padding: auto;
+  width: 100%;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  text-align: center;
+ 
+  
+  font-size: 16px;
+}
+
+.buttonAdd{
+  padding: auto;
+  width: 100%;
+  background-color: #ff7c02dc;
+  border: none;
+  color: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  text-align: center;
+ 
+  
+  font-size: 16px;
 }

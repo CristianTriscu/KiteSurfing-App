@@ -14,10 +14,8 @@ import TableRow from "@material-ui/core/TableRow";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import SimpleMenu from "./SimpleMenu";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import RestoreIcon from "@material-ui/icons/Restore";
 import FormDialog from "./FiltersWindow";
-import AddLocationDialog from "./AddLocationForm"
+import AddLocationDialog from "./AddLocationForm";
 const columns = [
   { id: "id", label: "Favourite", minWidth: 50 },
   { id: "name", label: "Name", minWidth: 170 },
@@ -38,10 +36,10 @@ const columns = [
   },
   {
     id: "probability",
-    label: "Wind prob",
+    label: "Wind prob (%)",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toFixed(2),
+    format: (value) => parseFloat(value).toFixed(2),
   },
   {
     id: "month",
@@ -173,9 +171,8 @@ class DashBoard extends Component {
 
             <div style={{ flex: 1 }}></div>
 
-            <AddLocationDialog/>
+            <AddLocationDialog loadData={this.loadData} />
             <SimpleMenu></SimpleMenu>
-            
           </Toolbar>
         </AppBar>
 

@@ -13,9 +13,10 @@ export default function FormDialog(props) {
   const data = props.data;
 
   const [open, setOpen] = React.useState(false);
-  const [valueCountry, setValueCountry] = React.useState("");
+  
   const [valueProb, setValueProb] = React.useState(0);
   const handleChangeProb = (e) => setValueProb(e.target.value);
+  const [valueCountry, setValueCountry] = React.useState("");
   const handleChangeCountry = (e) => setValueCountry(e.target.value);
 
   const handleApply1 = () => {
@@ -82,7 +83,7 @@ export default function FormDialog(props) {
             }}
           >
             {data.map((elem) => (
-              <option value={elem.country}>{elem.country}</option>
+              <option key={elem.country} value={elem.country}>{elem.country}</option>
             ))}
           </NativeSelect>
           <Button onClick={handleApply1}>Apply</Button>

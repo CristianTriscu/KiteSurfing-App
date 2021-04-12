@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import { Button, Paper } from "@material-ui/core";
+import { Button, Paper, Typography } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import KeyboardIcon from "@material-ui/icons/Keyboard";
@@ -36,6 +36,14 @@ class Login extends Component {
       errorOpen: null,
     };
 
+    this.isValid = () => {
+      if (this.state.emailInput === "" || this.state.passwordInput === "") {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
     this.handleChange = (name) => (e) => {
       this.setState({
         [name]: e.target.value,
@@ -44,26 +52,31 @@ class Login extends Component {
 
     this.handleLogIn = async (e) => {
       try {
-        e.preventDefault();
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            username: this.state.emailInput,
-            password: this.state.passwordInput,
-          }),
-        };
-        const response = await fetch(server+"login", requestOptions);
-        const data = await response.json();
-        //console.log(data);
-        if (data) {
-          localStorage.setItem("id", JSON.stringify(data.id));
-          localStorage.setItem("userId", JSON.stringify(data.userId));
-          props.history.push("/Dashboard")
+        if (!this.isValid()) {
+          alert("Please comlete all fields");
+          return;
         } else {
-          this.setState({
-            errorOpen: true,
-            error: "Something is not right. You should try again",
-          });
+          e.preventDefault();
+          const requestOptions = {
+            method: "POST",
+            body: JSON.stringify({
+              username: this.state.emailInput,
+              password: this.state.passwordInput,
+            }),
+          };
+          const response = await fetch(server + "login", requestOptions);
+          const data = await response.json();
+          //console.log(data);
+          if (data) {
+            localStorage.setItem("id", JSON.stringify(data.id));
+            localStorage.setItem("userId", JSON.stringify(data.userId));
+            props.history.push("/Dashboard");
+          } else {
+            this.setState({
+              errorOpen: true,
+              error: "Something is not right. You should try again",
+            });
+          }
         }
       } catch (err) {
         alert(err.toString());
@@ -79,7 +92,9 @@ class Login extends Component {
           <div className={classes.margin}>
             <FormControl>
               <Grid container spacing={1} alignItems="flex-end">
-                Kite logo here
+                <Typography variant="h5" font="roboto">
+                  Kite
+                </Typography>
               </Grid>
             </FormControl>
           </div>
@@ -90,10 +105,11 @@ class Login extends Component {
                   <AccountCircle />
                 </Grid>
                 <Grid item>
-                  <TextField 
-                  onChange={this.handleChange}
-                  id="input-Email" label="E-mail" 
-                  type="email"
+                  <TextField
+                    onChange={this.handleChange("emailInput")}
+                    id="input-Email"
+                    label="E-mail"
+                    type="email"
                   />
                 </Grid>
               </Grid>
@@ -108,7 +124,7 @@ class Login extends Component {
                 </Grid>
                 <Grid item>
                   <TextField
-                    onChange={this.handleChange}
+                    onChange={this.handleChange("passwordInput")}
                     id="input-Password"
                     label="Password"
                     type="password"
@@ -124,6 +140,14 @@ class Login extends Component {
               color="primary"
             >
               Log In
+            </Button>
+            <div className="customDiv2" />
+            <Button
+              onClick={() => props.history.push("/SignUp")}
+              variant="contained"
+              color="secondary"
+            >
+              Sign Up
             </Button>
           </div>
         </Paper>
